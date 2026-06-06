@@ -1,9 +1,11 @@
-# Least-Square Matching for Image Pairs
+# LSMEI: Least-Square Matching for Epipolar Image Pairs
 [![GitHub Repo stars](https://img.shields.io/github/stars/DonaldTrump-coder/LeastSquares_Matching?style=social)](https://github.com/DonaldTrump-coder/LeastSquares_Matching/)
 [![GitHub Repo forks](https://img.shields.io/github/forks/DonaldTrump-coder/LeastSquares_Matching?style=social)](https://github.com/DonaldTrump-coder/LeastSquares_Matching/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat)](http://www.apache.org/licenses/)
-![Last Commit](https://img.shields.io/github/last-commit/DonaldTrump-coder/LeastSquares_Matching?color=green)<br>
-A project of the Least-Square Matching Algorithm for Image Pairs in window-size areas. We provide the source code in C++ and a python library build upon it.<br>
+![Last Commit](https://img.shields.io/github/last-commit/DonaldTrump-coder/LeastSquares_Matching?color=green)
+![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%20Windows%2011-lightgrey)<br>
+A project of the sub-pixel Least-Square Matching Algorithm for **epipolar-rectified stereo image pairs** in window-size areas. The alogorithm is proposed by , where the correspondence search reduces to a one-dimensional problem along epipolar lines, enabling both fast convergence and high accuracy.<br>
+We provide the source code in C++ and a python API library build upon it. A PyQt Demo Application and the GPU-accleated version is also provided.<br>
 Up to now we have successfully tested the C++ and Python on Windows 10 and Windows 11.<br><br>
 Contributor links: [Haojun Tang](https://donaldtrump-coder.github.io/), [Jiahao Zhou](https://github.com/Jeiluo)
 
