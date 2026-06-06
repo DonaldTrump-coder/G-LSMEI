@@ -1,7 +1,7 @@
+#pragma once
 //Jiahao Zhou
 //jeiluosmith@gmail.com
 //git@github:Jeiluo
-#pragma once
 
 #include <iostream>	
 #include <math.h>
@@ -20,4 +20,7 @@ public:
 	cv::Mat matOperator(char op, cv::Mat&);
 	void saveResult(const std::string& savepath);
 	void Calculate(cv::Mat& LefImg, cv::Mat& RigImg, int WINDOWSIZE, double NCC_THRESHOLD);
+    #ifdef HAS_CUDA
+    void CalculateGPU(cv::Mat& LefImg, cv::Mat& RigImg, int WINDOWSIZE, double NCC_THRESHOLD);
+    #endif
 };

@@ -1,19 +1,19 @@
 #include "matching.h"
 #include "Correlation.h"
 
-matching::matching(std::string left_path, //左影像路径
-                std::string right_path //右影像路径
+matching::matching(std::string left_path,
+                std::string right_path
                 )
 {
-    left_img = cv::imread(left_path, cv::IMREAD_GRAYSCALE); //读取左影像
-    right_img = cv::imread(right_path, cv::IMREAD_GRAYSCALE); //读取右影像
-    W = left_img.cols; //影像宽度
-    H = right_img.rows; //影像高度
+    left_img = cv::imread(left_path, cv::IMREAD_GRAYSCALE);
+    right_img = cv::imread(right_path, cv::IMREAD_GRAYSCALE);
+    W = left_img.cols;
+    H = right_img.rows;
 }
 
 void matching::set_params(int size = 15, double threshold = 0.04)
 {
-    window_size = size; //传入平差窗口大小
+    window_size = size;
     d_corr_thres = threshold;
     left_window = cv::Mat::zeros(window_size, window_size, CV_32F);
     right_window = cv::Mat::zeros(window_size, window_size, CV_32F);
@@ -23,11 +23,18 @@ void matching::set_params(int size = 15, double threshold = 0.04)
 
 void matching::set_centers(int left_x, int left_y, int right_x, int right_y)
 {
+    int k = (int)(window_size/2);
+    if (left_x - k < 0 || left_x + k >= W ||
+        left_y - k < 0 || left_y + k >= H ||
+        right_x - k < 0 || right_x + k >= W ||
+        right_y - k < 0 || right_y + k >= H) {
+        leftx = -1;
+        return;
+    }
     leftx = left_x;
     lefty = left_y;
     rightx = right_x;
     righty = right_y; //record the centers
-    int k = (int)(window_size/2);
     for(int i = -k; i<k+1; i++) //x
     {
         for(int j = -k; j<k+1;j++) //y
@@ -356,6 +363,8 @@ void matching::precision()
 
 void matching::calculate()
 {
+    first = 1;
+    stop = 0;
     params_init();
     int times = 0;
     while(1)
@@ -537,3 +546,46 @@ double matching::get_b2()
 {
     return X.getMatrix_ele(7,0);
 }
+
+#ifdef HAS_CUDA
+#include "correlation_cuda.h"
+#include "extract_cuda.h"
+#include "matching_cuda.h"
+#include "cuda_common.h"
+
+int matching::gpu_device_count()
+{
+    return get_cuda_device_count();
+}
+
+std::vector<std::tuple<int, int, double, double>>
+matching::batch_adjust_gpu(
+    const std::vector<std::pair<int, int>>& left_centers,
+    const std::vector<std::pair<int, int>>& right_centers,
+    int window_size, double d_corr_threshold, int max_iterations
+)
+{
+    auto results = matching_adjust_gpu(
+        left_img.data, left_img.cols, left_img.rows,
+        right_img.data, right_img.cols, right_img.rows,
+        left_centers, right_centers,
+        window_size, (float)d_corr_threshold, max_iterations
+    );
+    std::vector<std::tuple<int, int, double, double>> corrected;
+    for (size_t i = 0; i < results.size(); i++)
+    {
+        double mx = results[i].matched_x;
+        double my = results[i].matched_y;
+        if (std::isnan(mx) || std::isnan(my)) continue;
+        if (mx < 0.0 || my < 0.0) continue;
+        if (mx >= (double)right_img.cols || my >= (double)right_img.rows) continue;
+        if (results[i].iterations >= max_iterations && !results[i].converged) continue;
+
+        corrected.push_back({
+            left_centers[i].first, left_centers[i].second,
+            results[i].matched_x, results[i].matched_y
+        });
+    }
+    return corrected;
+}
+#endif

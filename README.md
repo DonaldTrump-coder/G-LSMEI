@@ -14,6 +14,19 @@ Contributor links: [Haojun Tang](https://donaldtrump-coder.github.io/), [Jiahao 
 ### Structure
 <img src="./resources/structure.png" width="55%" />
 
+## Some Results
+### Matching Results
+|Left Image|Right Image|
+|:--:|:--:|
+|<img src="./docs/images/left_marked.jpg" width=100%>|<img src="./docs/images/right_marked.jpg" width=100%>|
+
+### Time Costs
+|Setups| CPU | GPU |
+|:-------:|:-------:|:-------:|
+|Time(s)| 332.27 | 0.621 |
+
+Improved by 500+ times!
+
 ## Core Algorithm tested in C++
 ### Windows
 **1. Download Release for MinGW-w64**<br>
@@ -33,9 +46,9 @@ In the project directory, run the following commands:<br>
 ```
 mkdir build
 cd build
-cmake .. -G "MinGW Makefiles"
-mingw32-make -j8
-.\leastsquares_matching.exe
+cmake .. -G "Visual Studio 17 2022"
+cmake --build . --config Release
+.\Release\leastsquares_matching.exe
 ```
 The output is from the main function in `core\src\test.cpp`
 
@@ -54,7 +67,7 @@ pip install -r requirements.txt
 ```
 cd python
 python setup.py bdist_wheel
-pip install dist\lsmatching-0.0.1-cp311-cp311-win_amd64.whl --force-reinstall
+python -m pip install (Get-ChildItem dist\lsmatching-*.whl).FullName --force-reinstall
 cd ..
 ```
 Then the install of C++ Source of Least-Square Matching is done.<br><br>

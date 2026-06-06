@@ -3,8 +3,8 @@
 
 int main()
 {
-    std::string left_path = "C:/Users/10527/Desktop/shuzisheyingceliang/LeastSquares_Matching/data/uavl_epi.jpg";
-    std::string right_path = "C:/Users/10527/Desktop/shuzisheyingceliang/LeastSquares_Matching/data/uavr_epi.jpg";
+    std::string left_path = "../data/uavl_epi.jpg";
+    std::string right_path = "../data/uavr_epi.jpg";
     matching match(left_path, right_path);
     match.set_params(45, 0.008);
     match.set_centers(2296,2127,1773,2127);

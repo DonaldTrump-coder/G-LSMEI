@@ -87,3 +87,37 @@ void CorrelationMatch::saveResult(const std::string& savepath) {
         outfileRight << ptR.x << '\t' << ptR.y << std::endl;
     }
 }
+
+#ifdef HAS_CUDA
+#include "cuda_common.h"
+#include "correlation_cuda.h"
+#include "extract_cuda.h"
+
+void CorrelationMatch::CalculateGPU(
+    cv::Mat& LefImg, cv::Mat& RigImg,
+    int WINDOWSIZE, double NCC_THRESHOLD
+)
+{
+    int fm_rows, fm_cols;
+    double* d_fm = PointFeature::extract_gpu(LefImg.data, LefImg.cols, LefImg.rows, POINTFEATUREMETHOD, &fm_rows, &fm_cols);
+
+    int total = fm_rows * fm_cols;
+    std::vector<double> h_fm(total);
+    cudaMemcpy(h_fm.data(), d_fm, total * sizeof(double), cudaMemcpyDeviceToHost);
+    cudaFree(d_fm);
+
+    auto matches = correlation_match_gpu(
+        LefImg.data, LefImg.cols, LefImg.rows,
+        RigImg.data, RigImg.cols, RigImg.rows,
+        h_fm.data(),
+        fm_rows, fm_cols,
+        WINDOWSIZE, static_cast<int>(SEARCHSIZE), (float)NCC_THRESHOLD
+    );
+    LeftSame.clear();
+    RigSame.clear();
+    for (const auto& m : matches) {
+        LeftSame.push_back(cv::Point(m.left_x, m.left_y));
+        RigSame.push_back(cv::Point(m.right_x, m.right_y));
+    }
+}
+#endif

@@ -12,10 +12,10 @@ const int THRESHOLD_Moravec = 3000;
 const long THRESHOLD_Harris = 1e10;
 const double K = 0.04;
 
-const int R = 3; // °ë¾¶
-const int GRAYSCALE = 20; // »Ò¶È²îãÐÖµ
-const int PIXEL = 37; // ÑÚÄ£ÄÚÏñËØÊý
-const float THRESHOLD_SUSAN = 0.9; // ÏìÓ¦ÖµãÐÖµ
+const int R = 3; // ï¿½ë¾¶
+const int GRAYSCALE = 20; // ï¿½Ò¶È²ï¿½ï¿½ï¿½Öµ
+const int PIXEL = 37; // ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+const float THRESHOLD_SUSAN = 0.9; // ï¿½ï¿½Ó¦Öµï¿½ï¿½Öµ
 
 Mat PointFeature::Moravec_calculate(Mat& img) {
 	Mat MoravecVar = Mat::zeros(img.rows, img.cols, CV_64FC1);
@@ -33,10 +33,10 @@ Mat PointFeature::Moravec_calculate(Mat& img) {
 					|| (!img.at<uchar>(i + k, j - k))
 					|| (!img.at<uchar>(i + k + 1, j - k - 1)))
 					continue;
-				Var[0] += pow((img.at<uchar>(i + k, j) - img.at<uchar>(i + k + 1, j)), 2);//´¹Ö±
+				Var[0] += pow((img.at<uchar>(i + k, j) - img.at<uchar>(i + k + 1, j)), 2);//ï¿½ï¿½Ö±
 				Var[1] += pow((img.at<uchar>(i, j + k) - img.at<uchar>(i, j + k + 1)), 2);//Ë®Æ½
-				Var[2] += pow((img.at<uchar>(i + k, j + k) - img.at<uchar>(i + k + 1, j + k + 1)), 2);//Ö÷¶Ô½ÇÏß
-				Var[3] += pow((img.at<uchar>(i + k, j - k) - img.at<uchar>(i + k + 1, j - k - 1)), 2);//¸±¶Ô½ÇÏß
+				Var[2] += pow((img.at<uchar>(i + k, j + k) - img.at<uchar>(i + k + 1, j + k + 1)), 2);//ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½
+				Var[3] += pow((img.at<uchar>(i + k, j - k) - img.at<uchar>(i + k + 1, j - k - 1)), 2);//ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½
 			}
 			double variant = *std::min_element(Var.begin(), Var.end());
 
@@ -54,7 +54,7 @@ cv::Mat PointFeature::Harris_calculate(cv::Mat& img) {
 	/*
 	Sobel(img, I[0], CV_64FC1, 1, 0, 3);
 	Sobel(img, I[1], CV_64FC1, 0, 1, 3);
-	*///SobelËã×Ó¿ÉÒÔ¼ÆËãÌÝ¶È
+	*///Sobelï¿½ï¿½ï¿½Ó¿ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½Ý¶ï¿½
 
 	std::array<Mat, 3>Gs
 	{ Mat::zeros(img.rows,img.cols,CV_64FC1) ,Mat::zeros(img.rows,img.cols,CV_64FC1) ,Mat::zeros(img.rows,img.cols,CV_64FC1) };
@@ -100,11 +100,11 @@ cv::Mat PointFeature::SUSAN_calculate(cv::Mat& img) {
 				mask.push_back(cv::Point(x, y));
 			}
 		}
-	}//¹¹½¨Ô²ÐÎÑÚÄ£
+	}//ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½Ä£
 
 	for (int i = R; i < img.rows - R; i++) {
 		for (int j = R; j < img.cols - R; j++) {
-			int n = 0;//ÑÚÄ£ÄÚÓëÖÐÐÄÏñËØ»Ò¶È²îÐ¡ÓÚãÐÖµµÄÏñËØÊý
+			int n = 0;//ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø»Ò¶È²ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			for (const cv::Point& offset : mask)
 				if (std::abs(img.at<uchar>(i, j) -
 					img.at<uchar>(i + offset.y, j + offset.x))
@@ -112,10 +112,23 @@ cv::Mat PointFeature::SUSAN_calculate(cv::Mat& img) {
 					n++;
 				}
 			double response = static_cast<double>(PIXEL - n) / PIXEL;
-			if (response > THRESHOLD_SUSAN) { // ²»ÏàËÆµÄÏñËØÊý³¬¹ýãÐÖµ£¬ÈÏÎªÊÇ½Çµã
+			if (response > THRESHOLD_SUSAN) { // ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½Îªï¿½Ç½Çµï¿½
 				SUSANVar.at<double>(i, j) = response;
 			}
 		}
 	}
 	return SUSANVar;
 }
+
+#ifdef HAS_CUDA
+#include "cuda_common.h"
+#include "extract_cuda.h"
+
+double* PointFeature::extract_gpu(
+    const unsigned char* img, int w, int h,
+    char method, int* rows, int* cols
+)
+{
+    return extract_features_gpu(img, w, h, method, rows, cols);
+}
+#endif

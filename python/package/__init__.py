@@ -1,9 +1,12 @@
 from ._lsmatching import Matching as LSMatching
+from ._lsmatching import CorrelationMatch
 import numpy as np
 
 class Matching:
     def __init__(self, left_image_path: str, right_image_path: str):
         self.matching = LSMatching(left_image_path, right_image_path)
+        self.left_path = left_image_path
+        self.right_path = right_image_path
     
     def set_params(self, windowsize: int = 15, d_corr_threshold: float = 0.04):
         self.matching.set_params(int(windowsize), d_corr_threshold)
@@ -73,3 +76,18 @@ class Matching:
     
     def get_b2(self) -> float:
         return self.matching.get_b2()
+    
+    def gpu_device_count(self) -> int:
+        return self.matching.gpu_device_count()
+    
+    def batch_adjust_gpu(self, window_size=15, d_corr=0.04, max_iter=20, matching_wsize = 3, corr_threshold = 0.7, savepath=None):
+        self.cm = CorrelationMatch()
+        self.cm.calculate_gpu(self.left_path, self.right_path, int(matching_wsize), corr_threshold)
+        self.cm.save_result(savepath)
+        
+        left_pts = [(p[0], p[1]) for p in self.cm.get_left_same()]
+        right_pts = [(p[0], p[1]) for p in self.cm.get_rig_same()]
+        
+        return self.matching.batch_adjust_gpu(
+            left_pts, right_pts, window_size, d_corr, max_iter
+        )

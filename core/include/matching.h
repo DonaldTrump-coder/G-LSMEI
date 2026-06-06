@@ -15,11 +15,11 @@ class matching
     int W,H;
     int leftx, lefty, rightx, righty;
     double new_rightx, new_righty;
-    Matrix X; //参数值
+    Matrix X;
     Matrix B;
     Matrix L;
-    Matrix x; //改正数
-    Matrix v; //残差
+    Matrix x;
+    Matrix v;
 
     cv::Mat g2;
     cv::Mat g2_dx, g2_dy;
@@ -80,4 +80,13 @@ class matching
     double get_b0();
     double get_b1();
     double get_b2();
+
+    std::vector<std::tuple<int, int, double, double>>
+    batch_adjust_gpu(
+        const std::vector<std::pair<int, int>>& left_centers,
+        const std::vector<std::pair<int, int>>& right_centers,
+        int window_size, double d_corr_threshold,
+        int max_iterations = 20
+    );
+    static int gpu_device_count();
 };

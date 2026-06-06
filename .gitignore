@@ -1,4 +1,4 @@
-build/
+*build/*
 pycache/
 .vscode/
 out/
@@ -6,3 +6,5 @@ out/
 _skbuild/
 *.whl
 __pycache__
+*.dat
+*dist/

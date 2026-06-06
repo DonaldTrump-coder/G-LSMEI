@@ -1,6 +1,8 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 #include <pybind11/numpy.h>
 #include "matching.h"
+#include "Correlation.h"
 
 namespace py = pybind11;
 
@@ -76,5 +78,32 @@ PYBIND11_MODULE(_lsmatching, m)
         .def("get_b0", &matching::get_b0)
         .def("get_b1", &matching::get_b1)
         .def("get_b2", &matching::get_b2)
+        .def("gpu_device_count", &matching::gpu_device_count)
+        .def("batch_adjust_gpu", &matching::batch_adjust_gpu)
+        ;
+    py::class_<CorrelationMatch>(m, "CorrelationMatch")
+        .def(py::init<>())
+        .def("calculate_gpu", [](CorrelationMatch &cm,
+                                  const std::string& left_path,
+                                  const std::string& right_path,
+                                  int window_size, double ncc_threshold)
+                                  {
+            cv::Mat left  = cv::imread(left_path, cv::IMREAD_GRAYSCALE);
+            cv::Mat right = cv::imread(right_path, cv::IMREAD_GRAYSCALE);
+            cm.CalculateGPU(left, right, window_size, ncc_threshold);
+        })
+        .def("save_result", &CorrelationMatch::saveResult)
+        .def("get_left_same", [](CorrelationMatch &cm) {
+            py::list out;
+            for (const auto& p : cm.getLeftSame())
+                out.append(py::make_tuple(p.x, p.y));
+            return out;
+        })
+        .def("get_rig_same", [](CorrelationMatch &cm) {
+            py::list out;
+            for (const auto& p : cm.getRigSame())
+                out.append(py::make_tuple(p.x, p.y));
+            return out;
+        })
         ;
 }

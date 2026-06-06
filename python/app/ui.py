@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QLabel, QWidget, QVBoxLayout, QDesktopWidget, QHBoxLayout, QSizePolicy, QLineEdit, QGridLayout, QSpacerItem
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QLabel, QWidget, QVBoxLayout, QDesktopWidget, QHBoxLayout, QSizePolicy, QLineEdit, QGridLayout, QSpacerItem, QComboBox
 from PyQt5.QtCore import Qt
 from python.app.ImageLabel import ClickableImageLabel, Window_Label
 
@@ -89,7 +89,20 @@ class Matching_ui(QMainWindow):
         choosing_layout.addWidget(self.choosing_label, alignment = Qt.AlignHCenter)
 
         self.matching_label = QLabel("自动匹配同名点")
-        matching_layout.addWidget(self.matching_label, alignment = Qt.AlignHCenter)
+        title_row = QHBoxLayout()
+        title_row.setContentsMargins(0, 0, 0, 0)
+        title_row.setSpacing(4)
+        self.gpu_combo = QComboBox()
+        self.gpu_combo.addItem("CPU")
+        self.gpu_combo.setMaximumWidth(int(self.width() * 0.06))
+        self.left_spacer = QWidget()
+        self.left_spacer.setFixedWidth(self.gpu_combo.width())
+        title_row.addWidget(self.left_spacer)
+        title_row.addStretch()
+        title_row.addWidget(self.matching_label)
+        title_row.addStretch()
+        title_row.addWidget(self.gpu_combo)
+        matching_layout.addLayout(title_row)
 
         row_layout = QHBoxLayout()
         row_layout.setContentsMargins(0, 0, 0, 0)
@@ -280,6 +293,11 @@ class Matching_ui(QMainWindow):
         self.matching_widget.setFixedWidth(int(self.width() * 0.2))
         self.matching_label.setFixedHeight(int(self.height() * 0.02)+1)
         self.matching_label.setStyleSheet(f"font-size:{int(self.height() * 0.02)}px;")
+        w = int(self.width() * 0.06)
+        self.gpu_combo.setFixedHeight(int(self.height() * 0.02) + 1)
+        self.gpu_combo.setStyleSheet(f"font-size:{int(self.height() * 0.015)}px;")
+        self.gpu_combo.setMaximumWidth(w)
+        self.left_spacer.setFixedWidth(self.gpu_combo.width())
         self.windowsize_label2.setFixedHeight(int(self.height() * 0.02)+1)
         self.windowsize_label2.setStyleSheet(f"font-size:{int(self.height() * 0.02)}px;")
         self.windowsize_line_edit2.setFixedHeight(int(self.height() * 0.02)+1)

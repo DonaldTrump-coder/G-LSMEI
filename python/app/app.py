@@ -5,6 +5,8 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 from lsmatching import Matching
 import os
+import subprocess
+import cv2
 
 def show_info(parent, title="提示", message="操作成功"):
     msg_box = QMessageBox(parent)
@@ -28,10 +30,22 @@ class matching_app:
     b0 = None
     b1 = None
     b2 = None
+    
+    @staticmethod
+    def detect_gpu():
+        try:
+            subprocess.run(
+                ["nvidia-smi"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True
+            )
+            return True
+        except (FileNotFoundError, subprocess.CalledProcessError):
+            return False
 
     def __init__(self):
         self.app = QApplication(sys.argv)
         self.ui = UI()
+        if self.detect_gpu():
+            self.ui.gpu_combo.addItem("GPU")
         self.ui.show()
         self.ui.directory_button.clicked.connect(self.set_directory)
         self.ui.left_btn.clicked.connect(self.get_left_image)
@@ -146,36 +160,63 @@ class matching_app:
         show_info(self.ui, "查看参数", f"h0 = {self.h0:.6f}, h1 = {self.h1:.6f}, a0 = {self.a0:.6f}, a1 = {self.a1:.6f}, a2 = {self.a2:.6f}, b0 = {self.b0:.6f}, b1 = {self.b1:.6f}, b2 = {self.b2:.6f}")
 
     def matching_cal(self):
+        self.right_points_corrected = []
+        
+        use_gpu = self.ui.gpu_combo.currentText() == "GPU"
         matching = Matching(self.left_img_path, self.right_img_path)
-
         windowsize_text = self.ui.windowsize_line_edit.text()
         ncc_thres_text = self.ui.d_ncc_line_edit.text()
-        windowsize = int(windowsize_text) if windowsize_text else 15
+        windowsize = int(windowsize_text) if windowsize_text else 35
         ncc_value = float(ncc_thres_text) if ncc_thres_text else 0.04
-        matching.set_params(windowsize, ncc_value)
-        windowsize_text = None
-        ncc_thres_text = None
+        
+        matching_windowsize_text = self.ui.windowsize_line_edit2.text()
+        matching_ncc_thres_text = self.ui.ncc_line_edit2.text()
+        matching_windowsize = int(matching_windowsize_text) if matching_windowsize_text else 5
+        matching_ncc_value = float(matching_ncc_thres_text) if matching_ncc_thres_text else 0.3
+            
+        if use_gpu:
+            raw = matching.batch_adjust_gpu(window_size=windowsize,
+                                            d_corr=ncc_value,
+                                            max_iter=20,
+                                            matching_wsize = matching_windowsize,
+                                            corr_threshold=matching_ncc_value,
+                                            savepath=self.working_directory
+                                            )
+            self.right_points_corrected = [
+                (rx, ry) for _, _, rx, ry in raw
+                if rx > 0 and ry > 0
+            ]
+            
+            x_path = os.path.join(self.working_directory, "Left_result_corrected.dat")
+            left_img = cv2.imread(self.left_img_path)
+            with open(x_path, 'w') as file:
+                for (lx, ly, _, _) in raw:
+                    file.write(f"{lx}\t{ly}\n")
+                    cv2.circle(left_img, (lx, ly), 3, (0, 0, 255), -1)
+            cv2.imwrite(os.path.join(self.working_directory, "left_marked.jpg"), left_img)
+        else:
+            matching.set_params(windowsize, ncc_value)
+            windowsize_text = None
+            ncc_thres_text = None
 
-        windowsize_text = self.ui.windowsize_line_edit2.text()
-        ncc_thres_text = self.ui.ncc_line_edit2.text()
-        windowsize = int(windowsize_text) if windowsize_text else 3
-        ncc_value = float(ncc_thres_text) if ncc_thres_text else 0.7
-        matching.set_matching_params(windowsize, ncc_value)
-
-        matching.get_matched_points(self.working_directory)
-        self.get_points()
-        for index, _ in enumerate(self.left_points):
-            x1, y1 = self.left_points[index]
-            x2, y2 = self.right_points[index]
-            matching.set_centers(x1, y1, x2, y2)
-            matching.calculate()
-            self.right_points_corrected.append((matching.get_matched_x(), matching.get_matched_y()))
+            matching.set_matching_params(matching_windowsize, matching_ncc_value)
+            matching.get_matched_points(self.working_directory)
+            self.get_points()
+            for index, _ in enumerate(self.left_points):
+                x1, y1 = self.left_points[index]
+                x2, y2 = self.right_points[index]
+                matching.set_centers(x1, y1, x2, y2)
+                matching.calculate()
+                self.right_points_corrected.append((matching.get_matched_x(), matching.get_matched_y()))
 
     def matching_output(self):
         corrected_y_path = os.path.join(self.working_directory, "Right_result_corrected.dat")
+        right_img = cv2.imread(self.right_img_path)
         with open(corrected_y_path, 'w') as file:
             for (x, y) in self.right_points_corrected:
                 file.write(f"{x}\t{y}\n")
+                cv2.circle(right_img, (int(x), int(y)), 3, (0, 0, 255), -1)
+        cv2.imwrite(os.path.join(self.working_directory, "right_marked.jpg"), right_img)
     
     def run(self):
         sys.exit(self.app.exec_())
