@@ -127,11 +127,11 @@ This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) de
 ## Citation
 If you use our work or our data in your research, please cite:
 ```bibtex
-@misc{Tang2025GLSMEI,
+@misc{Tang2026GLSMEI,
   title        = {G-LSMEI: GPU-Accelerated Least-Square Matching Refiner for Epipolar Image Pairs},
   author       = {Haojun Tang and Jiahao Zhou},
-  year         = {2025},
-  howpublished = {\url{https://github.com/DonaldTrump-coder/LeastSquares_Matching}},
+  year         = {2026},
+  howpublished = {\url{https://github.com/DonaldTrump-coder/G-LSMEI}},
   note         = {Version 1.0.2. Apache License 2.0}
 }
 ```
