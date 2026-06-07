@@ -1,6 +1,7 @@
 from ._lsmatching import Matching as LSMatching
 from ._lsmatching import CorrelationMatch
 import numpy as np
+from .version import __version__
 
 class Matching:
     def __init__(self, left_image_path: str, right_image_path: str):

@@ -1,8 +1,6 @@
 from python.app.ui import Matching_ui as UI
 from PyQt5.QtWidgets import QApplication, QSplashScreen, QFileDialog, QMessageBox
 import sys
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import Qt
 from lsmatching import Matching
 import os
 import subprocess

@@ -62,6 +62,10 @@ install(TARGETS _lsmatching
         RUNTIME DESTINATION "lsmatching")
 install(FILES ./package/__init__.py
         DESTINATION "lsmatching")
+install(FILES ./package/version.py
+        DESTINATION "lsmatching")
+install(FILES ./package/README_PyPI.md
+        DESTINATION "lsmatching")
 
 if(WIN32)
     file(GLOB OPENCV_DLLS "${OpenCV_DIR}/x64/vc*/bin/*.dll")

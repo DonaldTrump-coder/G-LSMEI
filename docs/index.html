@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="A local software and cloud service system for real-scene reconstruction.">
-  <meta name="keywords" content="Cloud Services, Real-Scene Reconstruction">
+        content="GPU-Accelerated Least-Square Matching Refiner for Epipolar Image Pairs.">
+  <meta name="keywords" content="Least-Squares Matching, GPU, CUDA, Photogrammetry, Epipolar">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Informative Scene-Reconstruction App</title>
+  <title>G-LSMEI</title>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
@@ -63,7 +63,10 @@
           More Work
         </a>
         <div class="navbar-dropdown">
-          <a class="navbar-item" href="https://donaldtrump-coder.github.io/FastViewGen/" target="_blank">
+          <a class="navbar-item" href="https://donaldtrump-coder.github.io/Informative-Scene-Reconstruction-App/" target="_blank" style="font-size: 0.775rem;">
+            Scene Reconstructor with Guidance Agent
+          </a>
+            <a class="navbar-item" href="https://donaldtrump-coder.github.io/FastViewGen/" target="_blank">
             FastViewGener
           </a>
           <a class="navbar-item" href="https://donaldtrump-coder.github.io/mapswithdrone" target="_blank">
@@ -82,10 +85,28 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title"><img src="static/images/project.png" style="height: 0.7em; vertical-align: middle;"/> Informative Scene-Reconstruction App</h1>
-          <h2 class="title is-3">
-            <em>Scene Reconstructor with Guidance Agent V0.0.2</em>
-          </h2>
+          <h1 class="title is-1 publication-title"><img src="static/images/project.png" style="height: 0.7em; vertical-align: middle;"/> G-LSMEI: GPU-Accelerated Least-Square Matching Refiner for Epipolar Image Pairs</h1>
+
+          <div style="margin-bottom: 0.5em;">
+            <a href="https://github.com/DonaldTrump-coder/G-LSMEI/" target="_blank">
+                <img src="https://img.shields.io/github/stars/DonaldTrump-coder/G-LSMEI?style=social" alt="Stars">
+            </a>
+            <a href="https://github.com/DonaldTrump-coder/G-LSMEI/" target="_blank">
+                <img src="https://img.shields.io/github/forks/DonaldTrump-coder/G-LSMEI?style=social" alt="Forks">
+            </a>
+            <a href="https://pypi.org/project/glsmei/" target="_blank">
+                <img src="https://img.shields.io/pypi/v/glsmei?color=blue" alt="PyPI">
+            </a>
+            <a href="https://donaldtrump-coder.github.io/G-LSMEI/" target="_blank">
+                <img src="https://img.shields.io/badge/Project_Page-G--LSMEI-brightgreen" alt="Page">
+            </a>
+            <a href="http://www.apache.org/licenses/" target="_blank">
+                <img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat" alt="License">
+            </a>
+            <img src="https://img.shields.io/github/last-commit/DonaldTrump-coder/G-LSMEI?color=green" alt="Last Commit">
+            <img src="https://img.shields.io/badge/platform-Windows%2010%20%7C%20Windows%2011-lightgrey" alt="Platform">
+          </div>
+
           <div class="is-size-5 publication-authors">
             <span class="author-block">
               <a href="https://donaldtrump-coder.github.io/" target="_blank">
@@ -93,18 +114,17 @@
             </a>,
             </span>
             <span class="author-block">
-              <span>
-               Jingran Zhang
-            </span>,
-            </span>
-            <span class="author-block">
-              <span>Siyuan Zou</span>
+              <a href="https://github.com/Jeiluo" target="_blank">
+                Jiahao Zhou
+            </a>
             </span>
           </div>
 
           <div class="is-size-5 publication-authors">
             <span class="author-block">
-                <a href="https://en.csu.edu.cn/" target="_blank">
+                <span><strong>Acknowledgements:</strong></span>
+                Thanks to the guidance of <a href="https://faculty.csu.edu.cn/zhangyunsheng1/zh_CN/index.htm" target="_blank">Yunsheng Zhang</a> from
+                <a href="https://www.csu.edu.cn/" target="_blank">
                     Central South University
                 </a>
             </span>
@@ -112,9 +132,9 @@
 
           <div class="column has-text-centered">
             <div class="publication-links">
-              <!-- Code Link. -->
+
               <span class="link-block">
-                <a href="https://github.com/DonaldTrump-coder/Informative-Scene-Reconstruction-App"
+                <a href="https://github.com/DonaldTrump-coder/G-LSMEI"
                    class="external-link button is-normal is-rounded is-dark" target="_blank">
                   <span class="icon">
                       <i class="fab fa-github"></i>
@@ -122,14 +142,14 @@
                   <span>Code</span>
                   </a>
               </span>
-              <!-- Video Link. -->
+
               <span class="link-block">
-                <a href="https://www.youtube.com/watch?v=epEAVYEmF5M"
+                <a href="https://pypi.org/project/glsmei/"
                    class="external-link button is-normal is-rounded is-dark" target="_blank">
                   <span class="icon">
-                      <i class="fas fa-video"></i>
+                      <i class="fab fa-python"></i>
                   </span>
-                  <span>Video</span>
+                  <span>Package</span>
                   </a>
                 </span>
             </div>
@@ -142,26 +162,76 @@
 </section>
 
 <section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-        <h2 class="title is-3">Video (in Simplified Chinese)</h2>
+    <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+            <figure>
+            <table style="margin: 0 auto; border-collapse: collapse; border: 2px solid #ccc; width: 70%;">
+            <tr>
+                <th style="text-align: center; border: 1px solid #ccc; padding: 0.1em;">Left Image</th>
+                <th style="text-align: center; border: 1px solid #ccc; padding: 0.1em;">Right Image</th>
+            </tr>
+            <tr>
+                <td style="text-align: center; border: 1px solid #ccc; padding: 0.3em;">
+                <img src="./images/left_marked.jpg" style="width: 90%;">
+                </td>
+                <td style="text-align: center; border: 1px solid #ccc; padding: 0.3em;">
+                <img src="./images/right_marked.jpg" style="width: 90%;">
+                </td>
+            </tr>
+            </table>
+            <figcaption style="text-align: center;">
+            Sub-pixel Matching Results of an Epipolar Image Pair.
+            </figcaption>
+            </figure>
+        </div>
+        <div class="columns is-centered has-text-centered" style="padding-top: 1.5em;">
+            <figure>
+                <table style="margin: 0 auto; border-collapse: collapse; border: 2px solid #ccc; width: 50%;">
+                <tr>
+                <th style="text-align: center; border: 1px solid #ccc; padding: 0.6em;">CPU</th>
+                <th style="text-align: center; border: 1px solid #ccc; padding: 0.6em;">GPU</th>
+                </tr>
+                <tr>
+                <td style="text-align: center; border: 1px solid #ccc; padding: 0.6em;">332.27 sec</td>
+                <td style="text-align: center; border: 1px solid #ccc; padding: 0.6em;">0.621 sec</td>
+                </tr>
+            </table>
+            <figcaption style="text-align: center;">
+            Batch computation time comparison between CPU and GPU implementations.
+            </figcaption>
+            </figure>
+        </div>
+        <div>
+            <p style="text-align: center;">
+                <strong>Efficiency improved by 500+ times in our GPU implementation!</strong>
+            </p>
+        </div>
     </div>
-    <div>
-    <iframe width="580" height="315" src="https://www.youtube.com/embed/epEAVYEmF5M" title="Scene Reconstructor with Guidance Agent V0.0.2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-  </div>
 </section>
 
-<section class="section">
+<section class="section" style="padding: 2.2em 0;">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">General Introduction</h2>
-          <p>
-            A Python-based local software and cloud service system that integrates 3D functionalities including <strong>sparse reconstruction</strong>, <strong>point cloud regions annotation</strong>, <strong>3D Gaussian Splatting (3DGS) real-scene model construction <em>on-cloud</em></strong>, <strong>real-scene rendering <em>on-cloud</em></strong>, and <strong>LLM-agent guidance</strong>. The system can support applications in tourism and disaster overview, and currently supports fast deployment on both Local (Windows 11) and Server (Linux) environments.
-          </p>
-      </div>
+        <div class="column is-four-fifths">
+        <h2 class="title is-3">About</h2>
+    <p>
+        A project of the sub-pixel <strong>Least-Square Matching Refining Algorithm</strong> for <strong>Epipolar-Rectified Stereo Image Pairs</strong> in window-size areas. The classic algorithm is proposed by Ackermann in
+        <a href="https://doi.org/10.1111/j.1477-9730.1984.tb00505.x" target="_blank">
+            <em>
+                Digital Image Correlation: Performance and Potential Application in Photogrammetry
+            </em>
+        </a>
+        (1984), where the correspondence search reduces to a one-dimensional problem along epipolar lines, enabling both fast convergence and high accuracy.
+    </p><br>
+    <p>
+    We provide the source code in <strong>C++</strong> and a <strong>Python API</strong> library built upon it.
+    A PyQt Demo Application and the CUDA-based GPU-accelerated version are also provided.
+    </p>
+    <p>
+    Up to now we have successfully tested the C++ and Python built from source code on <em>Windows 10</em> and <em>Windows 11</em>.
+    </p>
     </div>
+  </div>
   </div>
 </section>
 
@@ -169,11 +239,23 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Structure</h2>
+        <h2 class="title is-3">Structures</h2>
           <p>
             <figure>
-            <img src="static/images/structure.png" alt="Overview" style="width: 60%;">
-            <figcaption>Overview of our System Structure.</figcaption>
+            <img src="./images/Environments.png" style="width: 45%;">
+            <figcaption>Environments of our source code.</figcaption>
+            </figure>
+          </p>
+          <p style="padding:1.2em 0;">
+            <figure>
+            <img src="./images/Structures.png" style="width: 65%;">
+            <figcaption>Structure of our Demo Application.</figcaption>
+            </figure>
+          </p>
+          <p style="padding:1.2em 0;">
+            <figure>
+            <img src="./images/cudastream.png" style="width: 95%;">
+            <figcaption>Stream of the CUDA Executions.</figcaption>
             </figure>
           </p>
       </div>
@@ -181,35 +263,16 @@
   </div>
 </section>
 
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-        <h2 class="title is-3">Acknowledgements</h2>
-        <div class="content has-text-justified">
-          <p>
-            The third-party libraries used in this system are: <a href="https://www.riverbankcomputing.com/software/pyqt/", target="_blank">PyQt5</a>, <a href="https://colmap.github.io/pycolmap/index.html" target="_blank">PyColmap</a>, <a href="https://pyopengl.sourceforge.net/" target="_blank">PyOpenGL</a>, <a href="https://pyvista.org/" target="_blank">PyVista</a>, <a href="https://developers.openai.com/api/reference/overview" target="_blank">OpenAI Python</a>, <a href="https://www.open3d.org/" target="_blank">Open3D</a>, <a href="https://github.com/websocket-client/websocket-client" target="_blank">WebSocket-Client</a>, <a href="https://fastapi.tiangolo.com/" target="_blank">FastAPI</a>, <a href="https://uvicorn.dev/" target="_blank">uvicorn</a>, <a href="https://github.com/dranjan/python-plyfile" target="_blank">plyfile</a>, <a href="https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/" target="_blank">3DGS</a>, <a href="https://multipart.fastapiexpert.com/" target="_blank">Python-Multipart</a>
-          </p>
-        </div>
-        </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" style="padding:0.5em 0;">
+<section class="section" style="padding:2.2em 0;">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
         <h2 class="title is-3">License</h2>
         <div class="content has-text-justified">
           <p style="text-align: center;">
-            This project is released under a <strong>Non-Commercial Research License</strong>.<br>
-            The software is free for academic research and non-commercial use.<br>
-            Commercial use requires a separate license from the authors.<br>
-            See the <a href="https://github.com/DonaldTrump-coder/Informative-Scene-Reconstruction-App/blob/main/LICENSE", target="_blank">LICENSE</a> file for details.<br>
-            For commercial licensing, please contact:<br>
-            <a href="mailto:rs_lover@163.com", target="_blank">rs_lover@163.com</a>
-          </p>
+           This project is licensed under the <strong>Apache License 2.0</strong>.
+           See the <a href="https://github.com/DonaldTrump-coder/G-LSMEI/blob/main/LICENSE" target="_blank">LICENSE</a> file for details.
+           </p>
         </div>
         </div>
     </div>
@@ -218,24 +281,24 @@
 
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
+    <h2 class="title">Citation</h2>
     <p>
-        If you find this project useful in your research, please consider citing:
+        If you use our work or our data in your research, please cite:
     </p>
-    <pre><code>@misc{tang2026informative,
-    title = {Informative Scene-Reconstruction App},
-    author = {Haojun Tang and Jingran Zhang and Siyuan Zou},
-    year = {2026},
-    note={GitHub repository},
-    howpublished={https://github.com/DonaldTrump-coder/Informative-Scene-Reconstruction-App}
-    }</code></pre>
+    <pre><code>@misc{Tang2026GLSMEI,
+  title        = {G-LSMEI: GPU-Accelerated Least-Square Matching Refiner for Epipolar Image Pairs},
+  author       = {Haojun Tang and Jiahao Zhou},
+  year         = {2026},
+  howpublished = {\url{https://github.com/DonaldTrump-coder/G-LSMEI}},
+  note         = {Version 1.0.2. Apache License 2.0}
+}</code></pre>
   </div>
 </section>
 
 <footer class="footer">
   <div class="container">
     <div class="content has-text-centered">
-      <a class="icon-link" href="https://github.com/DonaldTrump-coder" class="external-link" disabled>
+      <a class="icon-link" href="https://github.com/DonaldTrump-coder" class="external-link" disabled target="_blank">
         <i class="fab fa-github"></i>
       </a>
     </div>

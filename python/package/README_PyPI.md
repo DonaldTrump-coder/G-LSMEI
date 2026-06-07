@@ -8,26 +8,26 @@
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%20Windows%2011-lightgrey)<br>
 A project of the sub-pixel Least-Square Matching Refining Algorithm for **Epipolar-Rectified Stereo Image Pairs** in window-size areas. The classic algorithm is proposed by Ackermann in [*DIGITAL IMAGE CORRELATION: PERFORMANCE AND POTENTIAL APPLICATION IN PHOTOGRAMMETRY*](https://doi.org/10.1111/j.1477-9730.1984.tb00505.x) (1984), where the correspondence search reduces to a one-dimensional problem along epipolar lines, enabling both fast convergence and high accuracy.<br><br>
 We provide the source code in C++ and a Python API library built upon it. A PyQt Demo Application and the CUDA-based GPU-accelerated version is also provided.<br>
-Up to now we have successfully tested the C++ and Python built from source code on *Windows 10* and *Windows 11*.<br><br>
+Up to now we have successfully tested the C++ and Python on *Windows 10* and *Windows 11*.<br><br>
 **[Project Page](https://donaldtrump-coder.github.io/G-LSMEI/)**<br>
 **Contributors**: [Haojun Tang](https://donaldtrump-coder.github.io/), [Jiahao Zhou](https://github.com/Jeiluo)<br>
 **Acknowledgements**: Thanks to the guidance of [Yunsheng Zhang](https://faculty.csu.edu.cn/zhangyunsheng1/zh_CN/index.htm) from [Central South University](https://www.csu.edu.cn/).
 
 ## About the Project
 ### Environment
-<img src="./docs/images/Environments.png" width="40%" />
+<img src="https://raw.githubusercontent.com/DonaldTrump-coder/G-LSMEI/main/docs/images/Environments.png" width="40%" />
 
 ### Application Structure
-<img src="./docs/images/Structures.png" width="55%" />
+<img src="https://raw.githubusercontent.com/DonaldTrump-coder/G-LSMEI/main/docs/images/Structures.png" width="55%" />
 
 ### CUDA Executions
-<img src="./docs/images/cudastream.png" width="75%" />
+<img src="https://raw.githubusercontent.com/DonaldTrump-coder/G-LSMEI/main/docs/images/cudastream.png" width="75%" />
 
 ## Some Results
 ### Matching Results
 |Left Image|Right Image|
 |:--:|:--:|
-|<img src="./docs/images/left_marked.jpg" width=100%>|<img src="./docs/images/right_marked.jpg" width=100%>|
+|<img src="https://raw.githubusercontent.com/DonaldTrump-coder/G-LSMEI/main/docs/images/left_marked.jpg" width=100%>|<img src="https://raw.githubusercontent.com/DonaldTrump-coder/G-LSMEI/main/docs/images/right_marked.jpg" width=100%>|
 
 ### Time Costs
 |Setups| CPU | GPU |
@@ -127,11 +127,11 @@ This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) de
 ## Citation
 If you use our work or our data in your research, please cite:
 ```bibtex
-@misc{Tang2026GLSMEI,
+@misc{Tang2025GLSMEI,
   title        = {G-LSMEI: GPU-Accelerated Least-Square Matching Refiner for Epipolar Image Pairs},
   author       = {Haojun Tang and Jiahao Zhou},
-  year         = {2026},
-  howpublished = {\url{https://github.com/DonaldTrump-coder/G-LSMEI}},
+  year         = {2025},
+  howpublished = {\url{https://github.com/DonaldTrump-coder/LeastSquares_Matching}},
   note         = {Version 1.0.2. Apache License 2.0}
 }
 ```

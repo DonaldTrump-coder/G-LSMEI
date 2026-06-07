@@ -1,0 +1,9 @@
+include CMakeLists.txt
+include app/ImageLabel.py
+include app/__init__.py
+include app/app.py
+include app/ui.py
+include bindings.cpp
+include package/__init__.py
+include setup.py
+exclude MANIFEST.in
