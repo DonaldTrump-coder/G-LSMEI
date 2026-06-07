@@ -1,20 +1,24 @@
-# LSMEI: Least-Square Matching for Epipolar Image Pairs
+# G-LSMEI: GPU-Accelerated Least-Square Matching Refiner for Epipolar Image Pairs
 [![GitHub Repo stars](https://img.shields.io/github/stars/DonaldTrump-coder/LeastSquares_Matching?style=social)](https://github.com/DonaldTrump-coder/LeastSquares_Matching/)
 [![GitHub Repo forks](https://img.shields.io/github/forks/DonaldTrump-coder/LeastSquares_Matching?style=social)](https://github.com/DonaldTrump-coder/LeastSquares_Matching/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=flat)](http://www.apache.org/licenses/)
 ![Last Commit](https://img.shields.io/github/last-commit/DonaldTrump-coder/LeastSquares_Matching?color=green)
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%20Windows%2011-lightgrey)<br>
-A project of the sub-pixel Least-Square Matching Algorithm for **epipolar-rectified stereo image pairs** in window-size areas. The alogorithm is proposed by , where the correspondence search reduces to a one-dimensional problem along epipolar lines, enabling both fast convergence and high accuracy.<br>
-We provide the source code in C++ and a python API library build upon it. A PyQt Demo Application and the GPU-accleated version is also provided.<br>
-Up to now we have successfully tested the C++ and Python on Windows 10 and Windows 11.<br><br>
-Contributor links: [Haojun Tang](https://donaldtrump-coder.github.io/), [Jiahao Zhou](https://github.com/Jeiluo)
+A project of the sub-pixel Least-Square Matching Refining Algorithm for **Epipolar-Rectified Stereo Image Pairs** in window-size areas. The classic alogorithm is proposed by Ackermann (1984), where the correspondence search reduces to a one-dimensional problem along epipolar lines, enabling both fast convergence and high accuracy.<br>
+We provide the source code in C++ and a Python API library build upon it. A PyQt Demo Application and the CUDA-based GPU-accleated version is also provided.<br>
+Up to now we have successfully tested the C++ and Python on *Windows 10* and *Windows 11*.<br><br>
+**Contributors**: [Haojun Tang](https://donaldtrump-coder.github.io/), [Jiahao Zhou](https://github.com/Jeiluo)<br>
+**Acknowledgements**: Thanks to the guidance of [Yunsheng Zhang](https://faculty.csu.edu.cn/zhangyunsheng1/zh_CN/index.htm) from [Central South University](https://www.csu.edu.cn/)
 
 ## About the Project
 ### Environment
-<img src="./resources/environments.png" width="55%" />
+<img src="./docs/images/Environments.png" width="40%" />
 
-### Structure
-<img src="./resources/structure.png" width="55%" />
+### Application Structure
+<img src="./docs/images/Structures.png" width="55%" />
+
+### CUDA Executions
+<img src="./docs/images/cudastream.png" width="75%" />
 
 ## Some Results
 ### Matching Results
@@ -29,20 +33,13 @@ Contributor links: [Haojun Tang](https://donaldtrump-coder.github.io/), [Jiahao 
 
 Improved by 500+ times!
 
-## Core Algorithm tested in C++
-### Windows
-**1. Download Release for MinGW-w64**<br>
-Click [here](https://github.com/niXman/mingw-builds-binaries/releases/download/15.2.0-rt_v13-rev0/x86_64-15.2.0-release-win32-seh-ucrt-rt_v13-rev0.7z) to download the release of `MinGW-W64 v13`.<br>
-Unzip it and place it on any place of your hard drive. Like ![mingw.PNG](./resources/mingw.PNG)<br>
-Configure the environment variables to include the MinGW-w64 path `mingw64\bin`. Like ![environment.PNG](./resources/environment.PNG)<br>
-In CMD, enter `gcc -v` and `g++ -v`.
-<p>If you get <img src="./resources/gcc.PNG" width="350vh" style="display:inline-block; vertical-align:middle; margin-right:10px;"> and <img src="./resources/g++.PNG" width="350vh" style="display:inline-block; vertical-align:middle; margin-right:10px;">, then the installation is finished.
-</p>
+## Core Algorithm tested in C++ (only CPU-based)
+**What you need?**<br>
+MSVC Compiler, CMake, and the source code:
+```
+git clone https://github.com/DonaldTrump-coder/G-LSMEI --recursive
+```
 
-**2. Install CMake for Windows**<br>
-Get the CMake installer for Windows [here](https://github.com/Kitware/CMake/releases/download/v4.2.0/cmake-4.2.0-windows-x86_64.msi) and install it under its guidance.<br>
-You also need to make sure its path `Cmake\bin` is a member of the environment variables. Like ![CMake.PNG](./resources/CMake.PNG)<br>
-In CMD, enter `cmake --version`, if you get the version of CMake, the installation is finished.<br><br>
 **3. Build for the Code**<br>
 In the project directory, run the following commands:<br>
 ```
